@@ -1,0 +1,6 @@
+
+public class RandomLetter {
+	public RandomLetter() {
+		rng = new Random(;)
+	}
+}

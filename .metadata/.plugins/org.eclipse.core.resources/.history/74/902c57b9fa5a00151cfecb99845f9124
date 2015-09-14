@@ -1,0 +1,43 @@
+import java.util.ArrayList;
+
+
+public class WordGrid {
+	int n = 3;
+	int m = 3;
+	Square[][] squares;
+	WordChecker dict;
+	int minLength;
+	
+	private WordGrid(int n, int m, int minLength) {
+		this.n = n;
+		this.m = m;
+		this.minLength = minLength;
+	}
+	
+	public static void main(String[] args) {
+		WordGrid grid = new WordGrid(3, 3);
+		grid.initialise();
+
+	}
+	
+	private void initialise() {
+		RandomLetter rl = new RandomLetter();
+		squares = new Square[n][m];
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) {
+				squares[i][j] = new Square(i, j, rl.next());
+			}
+		}
+	}
+	
+	private ArrayList<String> findWords() {
+		ArrayList<String> words = new ArrayList<String>();
+		Square square = squares[0][0];
+		do {
+			square.search("", words, dict, minLength);
+			square = square.next;
+		} while (square != null);
+		return words;
+	}
+
+}

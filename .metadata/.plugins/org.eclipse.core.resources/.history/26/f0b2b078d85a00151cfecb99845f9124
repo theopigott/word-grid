@@ -1,0 +1,21 @@
+
+public class Square {
+	// Position
+	int x;
+	int y;
+	// Letter
+	char c;
+	// Next Square when traversing grid
+	Square next;
+	// Visited Square in current word?
+	boolean visited;
+	
+	public Square(int x, int y, char c) {
+		this.x = x;
+		this.y = y;
+		this.c = c;
+		this.visited = false;
+	}
+	
+	
+}

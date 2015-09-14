@@ -1,0 +1,10 @@
+import java.util.Random;
+
+
+public class RandomLetter {
+	Random rng;
+	
+	public RandomLetter() {
+		rng = new Random();
+	}
+}

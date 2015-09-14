@@ -1,0 +1,29 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+
+
+public class WordChecker {
+	ArrayList<String> list;
+	
+	public WordChecker() throws IOException {
+		BufferedReader bf = new BufferedReader(new FileReader("dictionary.txt"));
+	}
+	
+	// This is horribly inefficient
+	// Update implementation to trie?
+	public int lookup(String s) {
+		if (list.contains(s)) {
+			return 1;
+		}
+		else {
+			for (String word : list) {
+				if (word.startsWith(s)) {
+					return 2;
+				}
+			}
+		}
+		return 0;
+	}
+}

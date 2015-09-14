@@ -1,0 +1,23 @@
+
+public class WordGrid {
+	int n = 3;
+	int m = 3;
+	Square[][] squares;
+	
+	public static void main(String[] args) {
+		WordGrid grid = new WordGrid();
+		initialise();
+
+	}
+	
+	private void initialise() {
+		RandomLetter rl = new RandomLetter();
+		squares = new Square[n][m];
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++) {
+				squares[i][j] = new Square(i, j, rl.next());
+			}
+		}
+	}
+
+}

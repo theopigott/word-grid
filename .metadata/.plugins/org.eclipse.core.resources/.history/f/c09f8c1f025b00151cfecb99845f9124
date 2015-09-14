@@ -1,0 +1,15 @@
+import java.util.Random;
+
+
+public class RandomLetter {
+	Random rng;
+	String alphabet = "abcdefghijklmnopqrstuvwxyz";
+	
+	public RandomLetter() {
+		rng = new Random();
+	}
+	
+	public char next() {
+		return (char) (rng.nextInt(26) + 'a');
+	}
+}

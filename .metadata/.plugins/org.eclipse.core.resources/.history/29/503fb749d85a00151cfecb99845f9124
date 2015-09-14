@@ -1,0 +1,10 @@
+
+public class Square {
+	// Position
+	int x;
+	int y;
+	// Letter
+	char c;
+	// Next Square when traversing grid
+	Square next;
+}

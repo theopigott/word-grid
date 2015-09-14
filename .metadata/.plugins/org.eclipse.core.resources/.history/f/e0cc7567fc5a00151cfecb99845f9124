@@ -1,0 +1,43 @@
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class Square {
+	// Position
+	int x;
+	int y;
+	// Letter
+	char c;
+	// Next Square when traversing grid
+	Square next;
+	// Visited Square in current word?
+	boolean visited;
+	// Neighbours
+	List<Square> neighbours;
+	
+	public Square(int x, int y, char c) {
+		this.x = x;
+		this.y = y;
+		this.c = c;
+		this.visited = false;
+		neighbours = new List<Square>();
+	}
+	
+	public void search(String root, ArrayList<String> words, WordChecker dict, int minLength) {
+		String s = root + c;
+		int result = dict.lookup(s);
+		if (result == 1 && s.length() > minLength) {
+			words.add(s);
+		}
+		else if (result == 2) {
+			visited = true;
+			for (Square square : neighbours) {
+				if (square.visited) continue;
+				square.search(s, words, dict, minLength);
+			}
+			visited = false;
+		}
+	}
+	
+	
+}

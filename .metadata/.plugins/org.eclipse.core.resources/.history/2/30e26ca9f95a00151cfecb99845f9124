@@ -1,0 +1,15 @@
+import java.util.Random;
+
+
+public class RandomLetter {
+	Random rng;
+	
+	public RandomLetter() {
+		rng = new Random();
+		rng.
+	}
+	
+	public char next() {
+		return (char) (rng.nextInt(26) + 'a');
+	}
+}

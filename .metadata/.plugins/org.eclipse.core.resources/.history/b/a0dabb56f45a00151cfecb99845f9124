@@ -1,0 +1,10 @@
+import java.util.ArrayList;
+
+
+public class WordChecker {
+	ArrayList<String> list;
+	
+	public lookup(String s) {
+		
+	}
+}

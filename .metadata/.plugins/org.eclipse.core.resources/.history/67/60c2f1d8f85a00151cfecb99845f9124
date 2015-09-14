@@ -1,0 +1,12 @@
+
+public class WordGrid {
+	int n = 3;
+	int m = 3;
+	Square[] squares;
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}
