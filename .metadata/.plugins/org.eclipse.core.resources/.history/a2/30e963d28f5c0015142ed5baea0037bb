@@ -1,0 +1,66 @@
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+
+
+public class WordChecker {
+	List<String> list;
+	Node root;
+	int N;
+	
+	private static final String alphabet = "abcdefghijklmnopqrstuvwxyz";
+	
+	private class Node {
+		private boolean isWord;
+		private Node[] next = new Node[alphabet.length()];
+	}
+	
+	private void add(String word) {
+		
+	}
+	
+	private Node put(Node x, String word, int d) {
+        if (x == null) x = new Node();
+        if (d == word.length()) {
+            if (x.isWord == null) N++;
+            x.isWord = true;
+            return x;
+        }
+        char c = word.charAt(d);
+        x.next[c] = put(x.next[c], word, d+1);
+        return x;
+    }
+	
+	public WordChecker(String filename) {
+        try {
+            list = Files.readAllLines(Paths.get(filename), Charset.defaultCharset());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+	}
+	
+	// This is horribly inefficient
+	// Update implementation to trie?
+	public int lookup(String s) {
+		if (list.contains(s)) {
+			return 1;
+		}
+		else {
+			for (String word : list) {
+				if (word.startsWith(s)) {
+					return 2;
+				}
+			}
+		}
+		return 0;
+	}
+	
+	public static void main(String[] args) {
+		WordChecker dict = new WordChecker("dictionary.txt");
+		System.out.println(dict.lookup("dog"));
+		System.out.println(dict.lookup("penc"));
+		System.out.println(dict.lookup("water"));
+	}
+}

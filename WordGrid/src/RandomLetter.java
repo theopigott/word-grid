@@ -1,41 +1,83 @@
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.Random;
 
-
 public class RandomLetter {
-	Random rng;
-	String alphabet = "abcdefghijklmnopqrstuvwxyz";
-	int[] dist;
+	private Random rng = new Random();
+	private static String alphabet = "abcdefghijklmnopqrstuvwxyz";
+	private double[] cumDist = new double[alphabet.length()];
 	
+	/*
+	 * Create random letter generator with distribution specified in filename
+	 * where lines are pairs of letter and weighting, e.g. "c, 4.6"
+	 */
+	public RandomLetter(String filename) {
+		readDistribution(filename);
+	}
+	
+	/*
+	 * Create random letter generator which equal weighting for all letters
+	 */
 	public RandomLetter() {
-		rng = new Random();
+		int N = alphabet.length();
+		double sum = 0;
+		for (int i = 0; i < N; i++) {
+			sum = sum + 1.0 / N;
+			cumDist[i] += sum;
+		}
 	}
 	
-	public RandomLetter(List<String> list) {
-		int[] freq = new int[alphabet.length()];
-		for (String word : list) {
-			for (char c : word.toCharArray()) {
-				freq[alphabet.indexOf(c)]++;
-			}
-		}
-		dist = new int[alphabet.length()];
-		dist[0] = freq[0];
-		for (int i = 1; i < alphabet.length(); i++) {
-			dist[i] = dist[i-1] + freq[i];
-//			System.out.println(alphabet.charAt(i) + ": " + freq[i]);
-		}
-		
-		rng = new Random();
-	}
-	
+	/*
+	 * Get next random letter
+	 */
 	public char next() {
-//		return (char) (rng.nextInt(26) + 'a');
-		int r = rng.nextInt(dist[alphabet.length()-1]) + 1;
-		for (int i = 0; i < alphabet.length(); i++) {
-			if (r <= dist[i]) {
-				return alphabet.charAt(i);
-			}
+		// Generate probability in [0, 1]
+		double p = rng.nextDouble();
+		// Find 1st letter with cumulative probability greater than p
+		for (int i = 0; i < alphabet.length() - 1; i++) {
+			if (p < cumDist[i]) return alphabet.charAt(i);
 		}
-		return ' ';
+		return alphabet.charAt(alphabet.length() - 1);
+	}
+	
+	/*
+	 * Read letter weightings from text file
+	 */
+	private void readDistribution(String filename) {
+		double[] dist = new double[alphabet.length()];
+		double sum = 0;
+		try {
+			FileReader fileReader = new FileReader(new File(filename));
+			BufferedReader bufferedReader = new BufferedReader(fileReader);
+			String line;
+			while ((line = bufferedReader.readLine()) != null) {
+				String[] lineSplit = line.split(",");
+				int i = alphabet.indexOf(lineSplit[0]);
+				dist[i] = Double.parseDouble(lineSplit[1]);
+				sum += dist[i];
+			}
+			fileReader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// Calculate cumulative probabilities
+		cumDist[0] = dist[0] / sum;
+		for (int i = 1; i < alphabet.length(); i++) {
+			cumDist[i] = cumDist[i-1] + (dist[i] / sum);
+		}
+	}
+	
+	/*
+	 * Unit testing
+	 */
+	public static void main(String[] args) {
+		RandomLetter rl = new RandomLetter("distribution.csv");
+		System.out.println(Arrays.toString(rl.cumDist));
+		for (int i = 0; i < 26; i++) {
+			System.out.println(rl.next());
+		}
 	}
 }

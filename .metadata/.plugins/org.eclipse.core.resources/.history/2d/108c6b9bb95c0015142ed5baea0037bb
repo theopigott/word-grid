@@ -1,0 +1,52 @@
+import java.util.ArrayList;
+import java.util.TreeSet;
+
+public class Square {
+	// Position
+	int x;
+	int y;
+	// Letter
+	char c;
+	// Next Square when traversing grid
+	Square next;
+	// Visited Square in current word?
+	boolean visited;
+	// Neighbours
+	ArrayList<Square> neighbours;
+	
+	public Square(int x, int y, char c) {
+		this.x = x;
+		this.y = y;
+		this.c = c;
+		this.visited = false;
+		neighbours = new ArrayList<Square>();
+	}
+	
+	/*
+	 * Search for words starting with start, looking up in dict and adding valid words
+	 * of length at least minLength to words
+	 */
+	public void search(String start, TreeSet<String> words, WordChecker dict, int minLength) {
+		String s = start + c;
+		int result = dict.lookup(s);
+		if (result == 0) return;
+		else {
+			if (result == 1 && s.length() >= minLength) {
+				words.add(s);
+			}
+			visited = true;
+			for (Square square : neighbours) {
+				if (square.visited) continue;
+				square.search(s, words, dict, minLength);
+			}
+			visited = false;
+		}
+	}
+	
+	@Override
+	public String toString() {
+		return Character.toString(c);
+	}
+	
+	
+}

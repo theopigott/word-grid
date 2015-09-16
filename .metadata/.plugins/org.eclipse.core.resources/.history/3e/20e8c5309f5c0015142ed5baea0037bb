@@ -1,0 +1,74 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.List;
+import java.util.Random;
+
+
+public class RandomLetter {
+	Random rng = new Random();
+	private static String alphabet = "abcdefghijklmnopqrstuvwxyz";
+//	double[] dist = new double[alphabet.length()];
+	double[] cumDist = new double[alphabet.length()];
+	
+	public RandomLetter(String filename) {
+		readDistribution(filename);
+		double r = rng.nextDouble();
+	}
+	
+//	public RandomLetter(List<String> list) {
+//		int[] freq = new int[alphabet.length()];
+//		for (String word : list) {
+//			for (char c : word.toCharArray()) {
+//				freq[alphabet.indexOf(c)]++;
+//			}
+//		}
+//		dist = new int[alphabet.length()];
+//		dist[0] = freq[0];
+//		for (int i = 1; i < alphabet.length(); i++) {
+//			dist[i] = dist[i-1] + freq[i];
+////			System.out.println(alphabet.charAt(i) + ": " + freq[i]);
+//		}
+//		
+//		rng = new Random();
+//	}
+	
+	public char next() {
+		return (char) (rng.nextInt(26) + 'a');
+//		int r = rng.nextInt(dist[alphabet.length()-1]) + 1;
+//		for (int i = 0; i < alphabet.length(); i++) {
+//			if (r <= dist[i]) {
+//				return alphabet.charAt(i);
+//			}
+//		}
+//		return ' ';
+	}
+	
+	private void readDistribution(String filename) {
+		double[] dist = new double[alphabet.length()];
+		double sum = 0;
+		try {
+			FileReader fileReader = new FileReader(new File(filename));
+			BufferedReader bufferedReader = new BufferedReader(fileReader);
+			String line;
+			while ((line = bufferedReader.readLine()) != null) {
+				String[] lineSplit = line.split(",");
+				int i = alphabet.indexOf(lineSplit[0]);
+				dist[i] = Double.parseDouble(lineSplit[1]);
+				sum += dist[i];
+			}
+			fileReader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		cumDist[0] = dist[0] / sum;
+		for (int i = 1; i < alphabet.length(); i++) {
+			cumDist[i] = cumDist[i-1] + (dist[i] / sum);
+		}
+	}
+	
+	public static void main(String[] args) {
+
+	}
+}

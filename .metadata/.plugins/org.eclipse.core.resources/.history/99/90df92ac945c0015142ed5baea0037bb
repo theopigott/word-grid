@@ -1,0 +1,83 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.List;
+
+
+public class WordChecker {
+	List<String> list;
+	Node root;
+	int N;
+	
+	private static final String alphabet = "abcdefghijklmnopqrstuvwxyz";
+	
+	private class Node {
+		private boolean isWord;
+		private Node[] next = new Node[alphabet.length()];
+	}
+	
+	private void add(String word) {
+		root = put(root, word, 0);
+	}
+	
+	private Node put(Node x, String word, int d) {
+//		System.out.println("d " + d);
+        if (x == null) {
+//        	System.out.println("null");
+        	x = new Node();
+        }
+        if (d == word.length()) {
+//        	System.out.println("full length");
+            x.isWord = true;
+//            System.out.println("true");
+            return x;
+        }
+        char c = word.charAt(d);
+        int i = alphabet.indexOf(c);
+//        System.out.println("c " + c + ", i " + i);
+        x.next[i] = put(x.next[i], word, d+1);
+//        System.out.println("return " + d);
+        return x;
+    }
+	
+	public int lookup(String s) {
+		return lookup(root, s, 0);
+	}
+	
+	public int lookup(Node x, String s, int d) {
+//		System.out.println("d " + d);
+		if (x == null) return 0;
+		if (d == s.length()) {
+			if (x.isWord) return 1;
+			return 2;
+		}
+        char c = s.charAt(d);
+        int i = alphabet.indexOf(c);
+//        System.out.println("c " + c + ", i " + i);
+		return lookup(x.next[i], s, d+1);
+	}
+	
+	public WordChecker(String filename) {
+		try {
+			FileReader fileReader = new FileReader(new File(filename));
+			BufferedReader bufferedReader = new BufferedReader(fileReader);
+			String line;
+			while ((line = bufferedReader.readLine()) != null) {
+//				System.out.println(line + ", " + line.length());
+				add(line);
+//				break;
+			}
+			fileReader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void main(String[] args) {
+		WordChecker dict = new WordChecker("dictionary.txt");
+		System.out.println(dict.lookup("dog"));
+		System.out.println(dict.lookup("penc"));
+		System.out.println(dict.lookup("water"));
+	}
+}
