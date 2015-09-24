@@ -3,7 +3,7 @@ import java.util.TreeSet;
 
 public class Square {
 	// Letter
-	char c;
+	String c;
 	// Next Square when traversing grid
 	Square next = null;
 	// Already visited square during search?
@@ -11,7 +11,7 @@ public class Square {
 	// Neighbours
 	ArrayList<Square> neighbours;
 	
-	public Square(char c) {
+	public Square(String c) {
 		this.c = c;
 		neighbours = new ArrayList<Square>();
 	}
@@ -39,7 +39,7 @@ public class Square {
 	
 	@Override
 	public String toString() {
-		return Character.toString(c);
+		return c;
 	}
 	
 	

@@ -15,6 +15,23 @@ public class WordChecker {
 	}
 	
 	/*
+	 * Construct word tree from words in given file
+	 */
+	public WordChecker(String filename) {
+		try {
+			FileReader fileReader = new FileReader(new File(filename));
+			BufferedReader bufferedReader = new BufferedReader(fileReader);
+			String line;
+			while ((line = bufferedReader.readLine()) != null) {
+				add(line);
+			}
+			fileReader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*
 	 * Add word to tree
 	 */
 	private void add(String word) {
@@ -68,23 +85,6 @@ public class WordChecker {
 			if (!alphabet.contains(s.substring(i, i+1))) return false;
 		}
 		return true;
-	}
-	
-	/*
-	 * Construct word tree from words in given file
-	 */
-	public WordChecker(String filename) {
-		try {
-			FileReader fileReader = new FileReader(new File(filename));
-			BufferedReader bufferedReader = new BufferedReader(fileReader);
-			String line;
-			while ((line = bufferedReader.readLine()) != null) {
-				add(line);
-			}
-			fileReader.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	/*

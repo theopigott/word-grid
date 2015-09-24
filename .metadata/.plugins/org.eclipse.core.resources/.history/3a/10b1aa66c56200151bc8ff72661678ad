@@ -1,0 +1,66 @@
+import java.util.HashSet;
+import java.util.Scanner;
+
+
+public class Console {
+
+	public static void main(String[] args) {
+		WordGrid grid = new WordGrid();
+		grid.initialise();
+		grid.findWords();
+		grid.play();
+
+	}
+
+	/*
+	 * Console-based game play
+	 */
+	private void play(grid) {
+		if (words == null) findWords();
+		
+		Scanner in = new Scanner(System.in);
+		
+		HashSet<String> correctWords = new HashSet<String>();
+		HashSet<String> incorrectWords = new HashSet<String>();
+		
+		int score = 0;
+		String guess;
+		while (true) {
+			System.out.println("\nScore: " + score + "\n");
+			printGrid();
+			System.out.print("\nEnter word: ");
+			guess = in.nextLine();
+			if (guess.equals("")) break;
+			else if (!dict.isInAlphabet(guess)) System.out.println("Please only enter letters!");
+			else if (guess.length() < minLength) System.out.println("Too short!");
+			else if (correctWords.contains(guess) || incorrectWords.contains(guess)) {
+				System.out.println("Already guessed that!");
+			}
+			else if (words.contains(guess)) {
+				int guessScore = wordScore(guess);
+				score += wordScore(guess);
+				System.out.println("Correct (+" + guessScore + ")!");
+				correctWords.add(guess);
+			}
+			else {
+				System.out.println("Incorrect!");
+				incorrectWords.add(guess);
+			}
+		}
+		
+		System.out.println("\nGuessed: " + (correctWords.size() + incorrectWords.size()));
+		System.out.println("Correct: " + correctWords.size());
+		System.out.println("Final score: " + score);
+		System.out.println("Total possible: " + words.size());
+		System.out.println("\nPress [Enter] to see missed words ...");
+		in.nextLine();
+		for (String word : words) {
+			if (!correctWords.contains(word)) {
+				System.out.println(word);
+			}
+		}
+		
+		in.close();
+	}
+	
+}
