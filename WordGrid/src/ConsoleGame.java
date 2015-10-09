@@ -20,18 +20,33 @@ public class ConsoleGame {
 		else {
 			grid = new WordGrid();
 		}
-		grid.initialise();
-		grid.findWords();
-		play(grid);
+		
+		Scanner in = new Scanner(System.in);
+		
+		System.out.println("Welcome to Word Grid!");
+		
+		while (true) {
+			System.out.println("\nPlay or solve or quit?");
+			String reponse = in.nextLine();
+			if (reponse.equalsIgnoreCase("p") || reponse.equalsIgnoreCase("play")) {
+				play(grid, in);
+			}
+			else if (reponse.equalsIgnoreCase("s") || reponse.equalsIgnoreCase("solve")) {
+				solve(grid, in);
+			}
+			else break;
+		}
+		
+		in.close();
 	}
 
 	/*
 	 * Main game loop
 	 */
-	private static void play(WordGrid grid) {
-		if (grid.words == null) grid.findWords();
-		
-		Scanner in = new Scanner(System.in);
+	private static void play(WordGrid grid, Scanner in) {
+		grid.randomize();
+		grid.initialize();
+		grid.findWords();
 		
 		HashSet<String> correctWords = new HashSet<String>();
 		HashSet<String> incorrectWords = new HashSet<String>();
@@ -72,8 +87,32 @@ public class ConsoleGame {
 				System.out.println(word);
 			}
 		}
+	}
+	
+	/*
+	 * Ask user for input of letters, display all words
+	 */
+	public static void solve(WordGrid grid, Scanner in) {		
+		String[][] letters = new String[grid.n][grid.m];
+		System.out.printf("\nGrid size: %d x %d\n", grid.n, grid.m);
+		System.out.println("Enter letters, separated by spaces: ");
+		for (int x = 0; x < grid.n; x++) {
+			System.out.printf("Row %d: ", x+1);
+			String[] line = in.nextLine().split(" ");
+			// Check correct number of letters, otherwise repeat row
+			if (line.length != grid.m) {
+				System.out.printf("Must enter %d letters separated by space!\n", grid.m);
+				x--;
+				continue;
+			}
+			letters[x] = line;
+		}
 		
-		in.close();
+		grid.setSquares(letters);
+		grid.initialize();
+		grid.findWords();
+		System.out.printf("\n\nFound %d words: \n", grid.words.size());
+		printWords(grid);
 	}
 	
 	/*

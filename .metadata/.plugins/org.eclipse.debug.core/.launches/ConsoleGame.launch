@@ -7,6 +7,6 @@
 <listEntry value="1"/>
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="ConsoleGame"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="4 4 4 dictionary.txt distribution.txt"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="4 4 3 SOWPODS.txt distribution.txt"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="WordGrid"/>
 </launchConfiguration>

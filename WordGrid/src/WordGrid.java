@@ -48,10 +48,20 @@ public class WordGrid {
 
 	}
 	
+	public void setSquares(String[][] letters) {
+		squares = new Square[n][m];
+		for (int x = 0; x < n; x++) {
+			for (int y = 0; y < m; y++) {
+				squares[x][y] = new Square(letters[x][y]);
+			}
+		}
+	}
+	
 	/*
-	 * Setup a grid with random letters
+	 * Randomize letters in grid
 	 */
-	public void initialise() {
+	public void randomize() {
+		// Initialize random number generator
 		RandomLetter rl;
 		if (distFilename != null) {
 			rl = new RandomLetter(distFilename);
@@ -66,6 +76,12 @@ public class WordGrid {
 				squares[x][y] = new Square(rl.next());
 			}
 		}
+	}
+	
+	/*
+	 * Setup relations in grid
+	 */
+	public void initialize() {
 		// Set next and neighbours
 		for (int x = 0; x < n; x++) {
 			for (int y = 0; y < m; y++) {
